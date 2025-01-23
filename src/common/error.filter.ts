@@ -17,7 +17,11 @@ export class ErrorFilter implements ExceptionFilter {
       });
     } else if (exception instanceof ZodError) {
       response.status(400).json({
-        errors: 'Validation error',
+        message: 'Validation error',
+        errors: exception.errors.map((err) => ({
+          path: err.path,
+          message: err.message,
+        })),
       });
     } else {
       response.status(500).json({
