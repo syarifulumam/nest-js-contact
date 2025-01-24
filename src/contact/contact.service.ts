@@ -70,6 +70,19 @@ export class ContactService {
     return this.toContactResponse(contact);
   }
 
+  async remove(user: User, contactId: number): Promise<ContactResponse> {
+    await this.checkContactMustExists(user.username, contactId);
+
+    const contact = await this.prismaService.contact.delete({
+      where: {
+        username: user.username,
+        id: contactId,
+      },
+    });
+
+    return this.toContactResponse(contact);
+  }
+
   async checkContactMustExists(
     username: string,
     contactId: number,
