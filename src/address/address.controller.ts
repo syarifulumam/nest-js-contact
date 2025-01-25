@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { Auth } from 'src/common/auth.decorator';
@@ -13,6 +14,7 @@ import {
   AddressResponse,
   CreateAddressRequest,
   GetAddressRequest,
+  UpdateAddressRequest,
 } from 'src/model/address.model';
 import { WebResponse } from 'src/model/web.model';
 
@@ -42,6 +44,19 @@ export class AddressController {
       address_id: addressId,
     };
     const result = await this.addressService.get(user, request);
+    return { data: result };
+  }
+
+  @Put(':addressId')
+  async update(
+    @Auth() user: User,
+    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('addressId', ParseIntPipe) addressId: number,
+    @Body() request: UpdateAddressRequest,
+  ): Promise<WebResponse<AddressResponse>> {
+    request.contact_id = contactId;
+    request.id = addressId;
+    const result = await this.addressService.update(user, request);
     return { data: result };
   }
 }
