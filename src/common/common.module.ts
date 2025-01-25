@@ -12,6 +12,7 @@ import { AuthMiddleware } from './auth.middleware';
 @Module({
   imports: [
     WinstonModule.forRoot({
+      level: 'debug',
       format: winston.format.json(), // Mengatur format log dalam bentuk JSON
       transports: [new winston.transports.Console()], // Menentukan transportasi log ke konsol.
     }),
